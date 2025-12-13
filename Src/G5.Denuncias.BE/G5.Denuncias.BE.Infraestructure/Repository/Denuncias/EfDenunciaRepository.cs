@@ -1,0 +1,67 @@
+﻿using G5.Denuncias.BE.Domain.Denuncias.Entities;
+using G5.Denuncias.BE.Domain.Denuncias;
+using G5.Denuncias.BE.Infraestructure.Context;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using G5.Denuncias.BE.Infraestructure.Token;
+
+namespace G5.Denuncias.BE.Infraestructure.Repository.Denuncias
+{
+    public class EfDenunciaRepository(DenunciasDbContext contexto, IConfiguration configuration) : IDenunciaRepository
+    {
+        private readonly DenunciasDbContext _contexto = contexto;
+
+        private readonly IConfiguration _configuration = configuration;
+
+        #region Usuario
+        public async Task<Usuario> RegistrarUsuarioAsync(string nombreUsuario, string claveHash)
+        {
+            var user = new Usuario { NombreUsuario = nombreUsuario, ClaveHash = claveHash };
+            _contexto.Usuarios.Add(user);
+            await _contexto.SaveChangesAsync();
+            return user;
+        }
+
+        public async Task<string?> AutenticarAsync(string nombreUsuario, string claveHash)
+        {
+            var user = await _contexto.Usuarios.FirstOrDefaultAsync(u => u.NombreUsuario == nombreUsuario && u.ClaveHash == claveHash);
+            var token = user == null ? null : _configuration.GenerateToken(user);
+            return await Task.FromResult(token);
+        }
+        #endregion Usuario
+
+        #region Denuncias
+        public async Task<Denuncia> CrearDenunciaAsync(Denuncia denuncia)
+        {
+            _contexto.Denuncias.Add(denuncia);
+            await _contexto.SaveChangesAsync();
+            return denuncia;
+        }
+
+        public async Task<Denuncia?> ObtenerDenunciaAsync(Guid id)
+        {
+            return await _contexto.Denuncias.FirstOrDefaultAsync(d => d.Id == id);
+        }
+
+        public async Task<IEnumerable<Denuncia>> ObtenerDenunciasPublicasUltimosDiasAsync(int dias)
+        {
+            var desde = DateTime.UtcNow.AddDays(-dias);
+            return await _contexto.Denuncias.Where(d => d.EsPublica && d.CreatedAt >= desde).ToListAsync();
+        }
+        #endregion Denuncias
+
+        #region Mensajes
+        public async Task<Mensaje> EnviarMensajeAsync(Mensaje mensaje)
+        {
+            _contexto.Mensajes.Add(mensaje);
+            await _contexto.SaveChangesAsync();
+            return mensaje;
+        }
+
+        public async Task<IEnumerable<Mensaje>> ObtenerMensajesUsuarioAsync(Guid usuarioId)
+        {
+            return await _contexto.Mensajes.Where(m => m.UsuarioDestinoId == usuarioId).ToListAsync();
+        }
+        #endregion Mensajes
+    }
+}

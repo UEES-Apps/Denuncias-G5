@@ -1,0 +1,42 @@
+﻿using G5.Denuncias.BE.Domain.Denuncias;
+using G5.Denuncias.BE.Infraestructure.Context;
+using G5.Denuncias.BE.Infraestructure.Factory;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics.CodeAnalysis;
+
+namespace G5.Denuncias.BE.Infraestructure.IoC
+{
+    [ExcludeFromCodeCoverage]
+    public static class DllInfraestructure
+    {
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+        {
+            // Session (in-memory session)
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
+
+            services.AddHttpContextAccessor();
+
+            // EF Core (SQL Server)
+            services.AddDbContext<DenunciasDbContext>(options =>
+            {
+                options.UseSqlServer(configuration.GetConnectionString("Denuncias"));
+            });
+
+            // Denuncias Repository
+            services.AddScoped<IDenunciaRepository>(serviceProvider =>
+            {
+                return DenunciaRepositoryFactory.Create(configuration, serviceProvider);
+            });
+
+            return services;
+        }
+    }
+}
