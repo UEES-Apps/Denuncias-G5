@@ -28,7 +28,7 @@ namespace G5.Denuncias.BE.Api.Controllers
         /// Autenticar usuario
         /// </summary>
         [HttpPost("/usuario/v1/autenticar")]
-        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Autenticar), StatusCodes.Status200OK)]
 
         [ProducesResponseType(typeof(ErroresDto), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErroresDto), StatusCodes.Status500InternalServerError)]

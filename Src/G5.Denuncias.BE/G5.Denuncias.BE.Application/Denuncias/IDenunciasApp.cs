@@ -12,7 +12,7 @@ namespace G5.Denuncias.BE.Application.Denuncias
     {
         #region Usuarios
         Task<Usuario> RegistrarUsuarioAsync(RegistrarUsuarioDtoIn request);
-        Task<string?> AutenticarAsync(AutenticarDtoIn request);
+        Task<Autenticar?> AutenticarAsync(AutenticarDtoIn request);
         #endregion Usuarios
 
         #region Denuncias

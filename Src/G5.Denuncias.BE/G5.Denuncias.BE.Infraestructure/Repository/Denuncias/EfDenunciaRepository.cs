@@ -22,11 +22,15 @@ namespace G5.Denuncias.BE.Infraestructure.Repository.Denuncias
             return user;
         }
 
-        public async Task<string?> AutenticarAsync(string nombreUsuario, string claveHash)
+        public async Task<Autenticar?> AutenticarAsync(string nombreUsuario, string claveHash)
         {
             var user = await _contexto.Usuarios.FirstOrDefaultAsync(u => u.NombreUsuario == nombreUsuario && u.ClaveHash == claveHash);
             var token = user == null ? null : _configuration.GenerateToken(user);
-            return await Task.FromResult(token);
+            var result = new Autenticar
+            {
+                Token = await Task.FromResult(token)
+            };
+            return result;
         }
         #endregion Usuario
 

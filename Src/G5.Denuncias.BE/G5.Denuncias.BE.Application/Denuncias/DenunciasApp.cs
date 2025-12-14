@@ -15,9 +15,12 @@ namespace G5.Denuncias.BE.Application.Denuncias
             return response;
         }
 
-        public async Task<string?> AutenticarAsync(AutenticarDtoIn request)
+        public async Task<Autenticar?> AutenticarAsync(AutenticarDtoIn request)
         {
             var response = await _repository.AutenticarAsync(request.NombreUsuario, request.ClaveHash);
+            if (response is null || response.Token is null) {
+                throw new ApplicationException("No autenticado");
+            }
             return response;
         }
         #endregion Usuarios

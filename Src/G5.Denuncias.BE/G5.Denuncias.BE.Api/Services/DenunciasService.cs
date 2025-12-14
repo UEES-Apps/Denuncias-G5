@@ -23,7 +23,7 @@ namespace G5.Denuncias.BE.Api.Services
             return response;
         }
 
-        public async Task<string?> AutenticarAsync(AutenticarInput request)
+        public async Task<Autenticar?> AutenticarAsync(AutenticarInput request)
         {
             var req = new AutenticarDtoIn
             {

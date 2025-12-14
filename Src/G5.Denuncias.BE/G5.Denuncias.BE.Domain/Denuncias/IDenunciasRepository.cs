@@ -6,7 +6,7 @@ namespace G5.Denuncias.BE.Domain.Denuncias
     {
         #region Usuarios
         Task<Usuario> RegistrarUsuarioAsync(string nombreUsuario, string claveHash);
-        Task<string?> AutenticarAsync(string nombreUsuario, string claveHash);
+        Task<Autenticar?> AutenticarAsync(string nombreUsuario, string claveHash);
         #endregion Usuarios
 
         #region Denuncias

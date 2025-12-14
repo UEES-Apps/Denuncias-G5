@@ -5,6 +5,7 @@ using System.Text.Json;
 using G5.Denuncias.BE.Infraestructure.Extentions;
 using G5.Denuncias.BE.Infraestructure.Token;
 using Microsoft.Extensions.Configuration;
+using G5.Denuncias.BE.Domain.Denuncias.Dtos;
 
 namespace G5.Denuncias.BE.Infraestructure.Repository.Denuncias
 {
@@ -25,18 +26,29 @@ namespace G5.Denuncias.BE.Infraestructure.Repository.Denuncias
         #region Usuarios
         public async Task<Usuario> RegistrarUsuarioAsync(string nombreUsuario, string claveHash)
         {
-            var users = Users;
+            var users = Users; 
+            if (string.IsNullOrEmpty(nombreUsuario) || 
+                nombreUsuario.Length  is 0 || 
+                !users.Any(x=>x.NombreUsuario.Trim().ToLower().Equals(nombreUsuario.Trim().ToLower())))
+            {
+                throw new ApplicationException("Usuario ya existe");
+            }
+
             var user = new Usuario { NombreUsuario = nombreUsuario, ClaveHash = claveHash };
             users.Add(user);
             Session.WriteToSession(UsersKey, users);
             return await Task.FromResult(user);
         }
 
-        public async Task<string?> AutenticarAsync(string nombreUsuario, string claveHash)
+        public async Task<Autenticar?> AutenticarAsync(string nombreUsuario, string claveHash)
         {
             var user = Users.FirstOrDefault(u => u.NombreUsuario == nombreUsuario && u.ClaveHash == claveHash);
             var token = user == null ? null : _configuration.GenerateToken(user);
-            return await Task.FromResult(token);
+            var result = new Autenticar
+            {
+                Token = await Task.FromResult(token)
+            };
+            return result;
         }
         #endregion Usuarios
 

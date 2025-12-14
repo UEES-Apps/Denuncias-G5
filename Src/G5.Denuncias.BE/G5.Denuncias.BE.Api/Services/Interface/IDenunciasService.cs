@@ -8,7 +8,7 @@ namespace G5.Denuncias.BE.Api.Services.Interface
 
         #region Usuarios
         Task<Usuario> RegistrarUsuarioAsync(RegistrarUsuarioInput request);
-        Task<string?> AutenticarAsync(AutenticarInput request);
+        Task<Autenticar?> AutenticarAsync(AutenticarInput request);
         #endregion Usuarios
 
         #region Denuncias
