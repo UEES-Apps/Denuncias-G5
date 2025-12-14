@@ -2,6 +2,7 @@ using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
 using G5.Denuncias.BE.Api.IoC;
 using G5.Denuncias.BE.Application.IoC;
+using G5.Denuncias.BE.Infraestructure.Extentions;
 using G5.Denuncias.BE.Infraestructure.IoC;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.OpenApi.Models;
@@ -130,6 +131,12 @@ try
     var app = builder.Build();
 
     Log.Information(" Run  BE Denuncias G5");
+
+    // Global Exception Handler
+    app.ConfigureExceptionHandler();
+
+    // Middleware
+    app.UseMiddleware<ExceptionMiddleware>();
 
     // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())

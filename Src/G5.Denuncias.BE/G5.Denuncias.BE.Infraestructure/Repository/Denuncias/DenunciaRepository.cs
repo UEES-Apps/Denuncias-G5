@@ -1,11 +1,11 @@
 ﻿using G5.Denuncias.BE.Domain.Denuncias.Entities;
 using G5.Denuncias.BE.Domain.Denuncias;
 using Microsoft.AspNetCore.Http;
-using System.Text.Json;
 using G5.Denuncias.BE.Infraestructure.Extentions;
 using G5.Denuncias.BE.Infraestructure.Token;
 using Microsoft.Extensions.Configuration;
-using G5.Denuncias.BE.Domain.Denuncias.Dtos;
+using G5.Denuncias.BE.Domain.Models;
+using static G5.Denuncias.BE.Domain.Models.Dtos.ErroresEnum;
 
 namespace G5.Denuncias.BE.Infraestructure.Repository.Denuncias
 {
@@ -31,7 +31,7 @@ namespace G5.Denuncias.BE.Infraestructure.Repository.Denuncias
                 nombreUsuario.Length  is 0 || 
                 !users.Any(x=>x.NombreUsuario.Trim().ToLower().Equals(nombreUsuario.Trim().ToLower())))
             {
-                throw new ApplicationException("Usuario ya existe");
+                throw new CustomException(TipoErrorEnum.SOLICITUD_INVALIDA,"Usuario ya existe");
             }
 
             var user = new Usuario { NombreUsuario = nombreUsuario, ClaveHash = claveHash };

@@ -1,6 +1,8 @@
 ﻿using G5.Denuncias.BE.Domain.Denuncias;
 using G5.Denuncias.BE.Domain.Denuncias.Entities;
 using G5.Denuncias.BE.Domain.Denuncias.Dtos;
+using G5.Denuncias.BE.Domain.Models;
+using static G5.Denuncias.BE.Domain.Models.Dtos.ErroresEnum;
 
 namespace G5.Denuncias.BE.Application.Denuncias
 {
@@ -19,7 +21,7 @@ namespace G5.Denuncias.BE.Application.Denuncias
         {
             var response = await _repository.AutenticarAsync(request.NombreUsuario, request.ClaveHash);
             if (response is null || response.Token is null) {
-                throw new ApplicationException("No autenticado");
+                throw new CustomException(TipoErrorEnum.SOLICITUD_INVALIDA, "No autenticado");
             }
             return response;
         }

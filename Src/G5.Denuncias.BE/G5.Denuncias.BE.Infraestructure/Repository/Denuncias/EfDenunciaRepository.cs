@@ -4,6 +4,8 @@ using G5.Denuncias.BE.Infraestructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using G5.Denuncias.BE.Infraestructure.Token;
+using G5.Denuncias.BE.Domain.Models;
+using static G5.Denuncias.BE.Domain.Models.Dtos.ErroresEnum;
 
 namespace G5.Denuncias.BE.Infraestructure.Repository.Denuncias
 {
@@ -17,6 +19,13 @@ namespace G5.Denuncias.BE.Infraestructure.Repository.Denuncias
         public async Task<Usuario> RegistrarUsuarioAsync(string nombreUsuario, string claveHash)
         {
             var user = new Usuario { NombreUsuario = nombreUsuario, ClaveHash = claveHash };
+            if (string.IsNullOrEmpty(nombreUsuario) ||
+                nombreUsuario.Length is 0 ||
+                !_contexto.Usuarios.Any(x => x.NombreUsuario.Trim().ToLower().Equals(nombreUsuario.Trim().ToLower())))
+            {
+                throw new CustomException(TipoErrorEnum.SOLICITUD_INVALIDA, "Usuario ya existe");
+            }
+
             _contexto.Usuarios.Add(user);
             await _contexto.SaveChangesAsync();
             return user;
