@@ -1,0 +1,173 @@
+:root {
+  --fondo: #1a1a1a;
+  --tarjeta: #242424;
+  --texto: #ffffff;
+  --texto-secundario: #a1a1a1;
+  --primario: #646cff;     
+  --primario-hover: #535bf2;
+  --borde: #3a3a3a;
+  --peligro: #ef4444;
+  --exito: #22c55e;
+}
+
+body {
+  margin: 0;
+  background-color: var(--fondo);
+  color: var(--texto);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.card {
+  background-color: var(--tarjeta);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--borde);
+  max-width: 600px;
+  margin: 0 auto;
+  transition: transform 0.2s;
+}
+
+
+input, select, textarea {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0 20px 0;
+  background-color: #121212;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  color: white;
+  font-size: 1rem;
+  box-sizing: border-box; 
+  transition: border-color 0.3s;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--primario);
+  background-color: #1a1a1a;
+}
+
+label {
+  display: block;
+  text-align: left;
+  color: var(--texto-secundario);
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-left: 4px;
+}
+
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.8em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: var(--primario);
+  color: white;
+  cursor: pointer;
+  transition: all 0.25s;
+  width: 100%; 
+}
+
+button:hover {
+  background-color: var(--primario-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(100, 108, 255, 0.4);
+}
+
+button.secondary {
+  background-color: transparent;
+  border: 1px solid var(--borde);
+}
+
+button.secondary:hover {
+  border-color: var(--texto);
+  background-color: #333;
+}
+
+
+.contenedor-tarjetas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.tarjeta-usuario {
+  background-color: #2a2a2a;
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: left;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.tarjeta-usuario:hover {
+  border-color: var(--primario);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+}
+
+.tarjeta-usuario h3 {
+  margin-top: 0;
+  color: var(--primario);
+}
+
+.etiqueta {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.mensaje-burbuja {
+  max-width: 75%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  position: relative;
+  line-height: 1.4;
+  font-size: 0.95rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.msg-propio {
+  align-self: flex-end;
+  background: linear-gradient(135deg, var(--primario), #4b55eb);
+  color: white;
+  border-bottom-right-radius: 2px;
+}
+
+
+.msg-otro {
+  align-self: flex-start;
+  background-color: #333;
+  color: #e0e0e0;
+  border-bottom-left-radius: 2px;
+}
+
+.msg-hora {
+  display: block;
+  font-size: 0.7rem;
+  margin-top: 4px;
+  opacity: 0.7;
+  text-align: right;
+}
