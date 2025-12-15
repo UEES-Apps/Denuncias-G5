@@ -31,10 +31,10 @@ function Buzon({ usuarioLogueado }) {
               key={denuncia.id} 
               className="tarjeta-usuario"
 
-              onClick={() => navigate(`/chat/${denuncia.id}`)}
+              onClick={() => navigate(`/chat/${denuncia.id}/${denuncia.titulo}`)}
               style={{ cursor: 'pointer' }}
             >
-              <h3>📂 Caso #{denuncia.id}</h3>
+              <h3>📂 Caso #{denuncia.titulo}</h3>
               <p><strong>Tema:</strong> {denuncia.titulo}</p>
               <p><small>{new Date(denuncia.fechaCreacion).toLocaleDateString()}</small></p>
               <button style={{ marginTop: '10px' }}>Abrir Chat</button>

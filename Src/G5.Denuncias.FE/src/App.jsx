@@ -74,7 +74,7 @@ function App() {
         } />
 
  
-        <Route path="/chat/:id" element={
+        <Route path="/chat/:id/:titulo" element={
            usuarioLogueado ? <Chat usuarioLogueado={usuarioLogueado} /> : <Navigate to="/" />
         } />
         <Route path="/publicas" element={

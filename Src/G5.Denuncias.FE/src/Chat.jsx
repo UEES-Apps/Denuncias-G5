@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { enviarMensaje, obtenerMensajes } from './servicios/buzonService';
 
 function Chat({ usuarioLogueado }) {
-  const { id } = useParams(); 
+  const { id, titulo } = useParams(); 
   const [mensajes, setMensajes] = useState([]);
   const [nuevoTexto, setNuevoTexto] = useState("");
 
@@ -22,7 +22,7 @@ function Chat({ usuarioLogueado }) {
 
     const intervalo = setInterval(recargarMensajes, 3000);
     return () => clearInterval(intervalo);
-  }, [id, usuarioLogueado]);
+  }, [id, titulo, usuarioLogueado]);
 
   const enviar = async (e) => {
     e.preventDefault();
@@ -36,7 +36,7 @@ function Chat({ usuarioLogueado }) {
   return (
     <div className="card" style={{ maxWidth: '600px', height: '80vh', display: 'flex', flexDirection: 'column' }}>
       <div style={{ borderBottom: '1px solid #444', paddingBottom: '10px', display: 'flex', justifyContent: 'space-between' }}>
-        <h3>Chat del Caso #{id}</h3>
+        <h3>Chat del Caso #{titulo}</h3>
         <Link to="/buzon">❌ Cerrar</Link>
       </div>
 
