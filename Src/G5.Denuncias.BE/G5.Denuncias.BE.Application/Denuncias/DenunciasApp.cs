@@ -34,15 +34,15 @@ namespace G5.Denuncias.BE.Application.Denuncias
             return response;
         }
 
-        public async Task<Denuncia?> ObtenerDenunciaAsync(Guid id)
+        public async Task<IEnumerable<Denuncia>> ObtenerDenunciasAsync()
         {
-            var response = await _repository.ObtenerDenunciaAsync(id);
+            var response = await _repository.ObtenerDenunciasAsync();
             return response;
         }
 
-        public async Task<IEnumerable<Denuncia>> ObtenerDenunciasPublicasUltimosDiasAsync(int dias)
+        public async Task<IEnumerable<Denuncia>> ObtenerDenunciasPublicasAsync()
         {
-            var response = await _repository.ObtenerDenunciasPublicasUltimosDiasAsync(dias);
+            var response = await _repository.ObtenerDenunciasPublicasAsync();
             return response;
         }
         #endregion Denuncias
@@ -54,9 +54,9 @@ namespace G5.Denuncias.BE.Application.Denuncias
             return response;
         }
 
-        public async Task<IEnumerable<Mensaje>> ObtenerMensajesUsuarioAsync(Guid usuarioId)
+        public async Task<IEnumerable<Mensaje>> ObtenerMensajesUsuarioAsync(Guid denunciaId)
         {
-            var response = await _repository.ObtenerMensajesUsuarioAsync(usuarioId);
+            var response = await _repository.ObtenerMensajesUsuarioAsync(denunciaId);
             return response;
         }
         #endregion Mensajes

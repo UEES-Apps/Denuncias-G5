@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { obtenerDenunciasPublicas } from './servicios/denunciasService';
 
@@ -7,14 +7,16 @@ function DenunciasPublicas() {
   const [filtroTiempo, setFiltroTiempo] = useState('semana');
   const navigate = useNavigate();
 
+
   useEffect(() => {
+    const cargarDatos = async () => {
+      const data = await obtenerDenunciasPublicas();
+      setDenuncias(data);
+    };
+
     cargarDatos();
   }, []);
 
-  const cargarDatos = async () => {
-    const data = await obtenerDenunciasPublicas();
-    setDenuncias(data);
-  };
 
 
   const denunciasFiltradas = denuncias.filter(d => {

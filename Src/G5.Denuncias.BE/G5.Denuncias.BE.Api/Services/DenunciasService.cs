@@ -48,7 +48,7 @@ namespace G5.Denuncias.BE.Api.Services
                 CiudadProvincia = request.CiudadProvincia,
                 EsPublica = request.EsPublica,
                 Tipo = request.Tipo,
-                UsuarioId = request.UsuarioId,
+                Usuario = request.Usuario,
                 CreatedAt = request.CreatedAt
             };
 
@@ -56,15 +56,15 @@ namespace G5.Denuncias.BE.Api.Services
             return response;
         }
 
-        public async Task<Denuncia?> ObtenerDenunciaAsync(Guid id)
+        public async Task<IEnumerable<Denuncia>> ObtenerDenunciasAsync()
         {
-            var response = await _application.ObtenerDenunciaAsync(id);
+            var response = await _application.ObtenerDenunciasAsync();
             return response;
         }
 
-        public async Task<IEnumerable<Denuncia>> ObtenerDenunciasPublicasUltimosDiasAsync(int dias)
+        public async Task<IEnumerable<Denuncia>> ObtenerDenunciasPublicasAsync()
         {
-            var response = await _application.ObtenerDenunciasPublicasUltimosDiasAsync(dias);
+            var response = await _application.ObtenerDenunciasPublicasAsync();
             return response;
         }
         #endregion Denuncias
@@ -76,7 +76,7 @@ namespace G5.Denuncias.BE.Api.Services
             {
                 Id = request.Id,
                 Remitente = request.Remitente,
-                UsuarioDestinoId = request.UsuarioDestinoId,
+                UsuarioDestino = request.UsuarioDestino,
                 DenunciaId = request.DenunciaId,
                 Contenido = request.Contenido,
                 CreatedAt = request.CreatedAt
@@ -86,9 +86,9 @@ namespace G5.Denuncias.BE.Api.Services
             return response;
         }
 
-        public async Task<IEnumerable<Mensaje>> ObtenerMensajesUsuarioAsync(Guid usuarioId)
+        public async Task<IEnumerable<Mensaje>> ObtenerMensajesUsuarioAsync(Guid denunciaId)
         {
-            var response = await _application.ObtenerMensajesUsuarioAsync(usuarioId);
+            var response = await _application.ObtenerMensajesUsuarioAsync(denunciaId);
             return response;
         }
         #endregion Mensajes

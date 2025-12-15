@@ -16,6 +16,18 @@ var builder = WebApplication.CreateBuilder(args);
 
 try
 {
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowReact",
+            policy =>
+            {
+                policy
+                    .AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+            });
+    });
+
     builder.Services.AddControllers();
     builder.Services.AddMemoryCache();
 
@@ -131,6 +143,8 @@ try
     builder.Services.AddEndpointsApiExplorer();
 
     var app = builder.Build();
+
+    app.UseCors("AllowReact");
 
     Log.Information(" Run  BE Denuncias G5");
 

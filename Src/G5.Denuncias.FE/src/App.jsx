@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import { BrowserRouter, Routes, Route, Navigate,Link } from 'react-router-dom';
-import Login from './Login';
-import Registro from './Registro';
-import Dashboard from './Dashboard';
+import { BrowserRouter, Link, Navigate, Route, Routes } from 'react-router-dom';
+import './App.css';
 import Buzon from './Buzon';
 import Chat from './Chat';
-import './App.css';
 import CrearDenuncia from './CrearDenuncia';
+import Dashboard from './Dashboard';
 import DenunciasPublicas from './DenunciasPublicas';
+import Login from './Login';
+import Registro from './Registro';
 function App() {
   const [usuarioLogueado, setUsuarioLogueado] = useState(null);
 
@@ -75,7 +75,7 @@ function App() {
 
  
         <Route path="/chat/:id" element={
-           usuarioLogueado ? <Chat /> : <Navigate to="/" />
+           usuarioLogueado ? <Chat usuarioLogueado={usuarioLogueado} /> : <Navigate to="/" />
         } />
         <Route path="/publicas" element={
            usuarioLogueado ? <DenunciasPublicas /> : <Navigate to="/" />

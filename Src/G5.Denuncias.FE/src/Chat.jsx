@@ -1,31 +1,36 @@
-import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom'; 
-import { obtenerMensajes, enviarMensaje } from './servicios/buzonService';
+import { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { enviarMensaje, obtenerMensajes } from './servicios/buzonService';
 
-function Chat() {
+function Chat({ usuarioLogueado }) {
   const { id } = useParams(); 
   const [mensajes, setMensajes] = useState([]);
   const [nuevoTexto, setNuevoTexto] = useState("");
 
-  const recargarMensajes = async () => {
+  const recargarMensajes2 = async () => {
     const datos = await obtenerMensajes(id);
     setMensajes(datos);
   };
 
   useEffect(() => {
+    const recargarMensajes = async () => {
+      const datos = await obtenerMensajes(id);
+      setMensajes(datos);
+    };
+
     recargarMensajes();
 
     const intervalo = setInterval(recargarMensajes, 3000);
     return () => clearInterval(intervalo);
-  }, [id]);
+  }, [id, usuarioLogueado]);
 
   const enviar = async (e) => {
     e.preventDefault();
     if (!nuevoTexto.trim()) return;
 
-    await enviarMensaje(id, nuevoTexto, 'usuario');
-    setNuevoTexto(""); 
-    recargarMensajes(); 
+    await enviarMensaje(id, nuevoTexto, 'usuario', usuarioLogueado.usuario);
+    setNuevoTexto("");
+    await recargarMensajes2();
   };
 
   return (
@@ -56,17 +61,17 @@ function Chat() {
 
       <form onSubmit={enviar} style={{ display: 'flex', gap: '10px', borderTop: '1px solid #444', paddingTop: '10px', alignItems: 'center' }}>
         
-        <input 
-          type="text" 
+        <input
+          type="text"
           value={nuevoTexto}
           onChange={(e) => setNuevoTexto(e.target.value)}
           placeholder="Escriba un mensaje..."
 
-          style={{ flex: 1, margin: 0 }} 
+          style={{ flex: 1, margin: 0 }}
         />
         
-        <button 
-          type="submit" 
+        <button
+          type="submit"
 
           style={{ width: 'auto', margin: 0, padding: '10px 20px' }}
         >

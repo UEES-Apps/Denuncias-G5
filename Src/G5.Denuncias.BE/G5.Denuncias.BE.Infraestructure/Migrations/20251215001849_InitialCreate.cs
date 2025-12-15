@@ -24,9 +24,9 @@ namespace G5.Denuncias.BE.Infraestructure.Migrations
                     Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FechaEvento = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CiudadProvincia = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EsPublica = table.Column<bool>(type: "bit", nullable: false),
-                    Tipo = table.Column<int>(type: "int", nullable: false),
-                    UsuarioId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    EsPublica = table.Column<string>(type: "varchar(20)", nullable: false),
+                    Tipo = table.Column<string>(type: "varchar(50)", nullable: false),
+                    Usuario = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -41,7 +41,7 @@ namespace G5.Denuncias.BE.Infraestructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DenunciaId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    UsuarioDestinoId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UsuarioDestino = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Remitente = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Contenido = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)

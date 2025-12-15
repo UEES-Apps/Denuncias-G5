@@ -78,16 +78,15 @@ namespace G5.Denuncias.BE.Infraestructure.Repository.Denuncias
             return await Task.FromResult(denuncia);
         }
 
-        public async Task<Denuncia?> ObtenerDenunciaAsync(Guid id)
+        public async Task<IEnumerable<Denuncia>> ObtenerDenunciasAsync()
         {
-            var d = Denuncias.FirstOrDefault(x => x.Id == id);
+            var d = Denuncias.ToList().AsEnumerable();
             return await Task.FromResult(d);
         }
 
-        public async Task<IEnumerable<Denuncia>> ObtenerDenunciasPublicasUltimosDiasAsync(int dias)
+        public async Task<IEnumerable<Denuncia>> ObtenerDenunciasPublicasAsync()
         {
-            var desde = DateTime.UtcNow.AddDays(-dias);
-            var result = Denuncias.Where(d => d.EsPublica && d.CreatedAt >= desde).ToList().AsEnumerable();
+            var result = Denuncias.Where(d => d.EsPublica.Equals("publica")).ToList().AsEnumerable();
             return await Task.FromResult(result);
         }
         #endregion Denuncias
@@ -103,9 +102,9 @@ namespace G5.Denuncias.BE.Infraestructure.Repository.Denuncias
             return await Task.FromResult(mensaje);
         }
 
-        public async Task<IEnumerable<Mensaje>> ObtenerMensajesUsuarioAsync(Guid usuarioId)
+        public async Task<IEnumerable<Mensaje>> ObtenerMensajesUsuarioAsync(Guid denunciaId)
         {
-            var result = Mensajes.Where(m => m.UsuarioDestinoId == usuarioId).ToList().AsEnumerable();
+            var result = Mensajes.Where(m => m.DenunciaId == denunciaId).ToList().AsEnumerable();
             return await Task.FromResult(result);
         }
         #endregion Mensajes

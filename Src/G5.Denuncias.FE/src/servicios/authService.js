@@ -1,22 +1,45 @@
-let usuariosDB = [];
-export const registrarUsuario = async (usuario, clave) => {
-  await new Promise(resolve => setTimeout(resolve, 500));
-  const existe = usuariosDB.find(u => u.usuario === usuario);
-  if (existe) {
-    throw new Error("El usuario ya existe");
-  }
-  usuariosDB.push({ usuario, clave });
-  console.log("Base de datos actual:", usuariosDB); 
-  return true;
-};
-export const loginUsuario = async (usuario, clave) => {
-  await new Promise(resolve => setTimeout(resolve, 500));
+import { handleErrorResponse } from './handleErrorResponse';
 
-  const usuarioEncontrado = usuariosDB.find(u => u.usuario === usuario && u.clave === clave);
-  
-  if (usuarioEncontrado) {
-    return { usuario: usuarioEncontrado.usuario, token: 'token-falso-123' };
-  } else {
-    throw new Error("Credenciales incorrectas");
+const API_BASE_URL = "http://localhost:8080/usuario/v1";
+
+export const registrarUsuario = async (usuario, clave) => {
+  const response = await fetch(`${API_BASE_URL}/registrar`, {
+    method: "POST",
+    headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      nombreUsuario: usuario,
+      claveHash: clave
+    })
+  });
+
+  if (!response.ok) {
+    await handleErrorResponse(response);
   }
+
+  // 200 OK
+  return await response.json();
+};
+
+export const loginUsuario = async (usuario, clave) => {
+  const response = await fetch(`${API_BASE_URL}/autenticar`, {
+    method: "POST",
+    headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      nombreUsuario: usuario,
+      claveHash: clave
+    })
+  });
+
+  if (!response.ok) {
+    await handleErrorResponse(response);
+  }
+
+  // 200 OK
+  return await response.json();
 };

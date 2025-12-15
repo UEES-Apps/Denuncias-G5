@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using G5.Denuncias.BE.Infraestructure.Token;
 using G5.Denuncias.BE.Domain.Models;
 using static G5.Denuncias.BE.Domain.Models.Dtos.ErroresEnum;
+using System.Threading.RateLimiting;
 
 namespace G5.Denuncias.BE.Infraestructure.Repository.Denuncias
 {
@@ -64,15 +65,14 @@ namespace G5.Denuncias.BE.Infraestructure.Repository.Denuncias
             return denuncia;
         }
 
-        public async Task<Denuncia?> ObtenerDenunciaAsync(Guid id)
+        public async Task<IEnumerable<Denuncia>> ObtenerDenunciasAsync()
         {
-            return await _contexto.Denuncias.FirstOrDefaultAsync(d => d.Id == id);
+            return await _contexto.Denuncias.ToListAsync();
         }
 
-        public async Task<IEnumerable<Denuncia>> ObtenerDenunciasPublicasUltimosDiasAsync(int dias)
+        public async Task<IEnumerable<Denuncia>> ObtenerDenunciasPublicasAsync()
         {
-            var desde = DateTime.UtcNow.AddDays(-dias);
-            return await _contexto.Denuncias.Where(d => d.EsPublica && d.CreatedAt >= desde).ToListAsync();
+            return await _contexto.Denuncias.Where(d => d.EsPublica.Equals("publica")).ToListAsync();
         }
         #endregion Denuncias
 
@@ -84,9 +84,9 @@ namespace G5.Denuncias.BE.Infraestructure.Repository.Denuncias
             return mensaje;
         }
 
-        public async Task<IEnumerable<Mensaje>> ObtenerMensajesUsuarioAsync(Guid usuarioId)
+        public async Task<IEnumerable<Mensaje>> ObtenerMensajesUsuarioAsync(Guid denunciaId)
         {
-            return await _contexto.Mensajes.Where(m => m.UsuarioDestinoId == usuarioId).ToListAsync();
+            return await _contexto.Mensajes.Where(m => m.DenunciaId == denunciaId).ToListAsync();
         }
         #endregion Mensajes
     }

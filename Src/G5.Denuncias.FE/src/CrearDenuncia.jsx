@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { crearDenuncia } from './servicios/denunciasService';
 
 function CrearDenuncia({ usuarioLogueado }) {
@@ -10,17 +10,17 @@ function CrearDenuncia({ usuarioLogueado }) {
     titulo: '',
     descripcion: '',
     fechaEvento: '',
-    ciudad: 'Quito', 
-    esPublica: 'publica', 
-    tipo: 'Aseo y Ornato' 
+    ciudad: 'Quito',
+    esPublica: 'publica',
+    tipo: 'Aseo y Ornato'
   });
 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormulario({
-      ...formulario, 
-      [name]: value 
+      ...formulario,
+      [name]: value
     });
   };
 
@@ -28,16 +28,16 @@ function CrearDenuncia({ usuarioLogueado }) {
     e.preventDefault();
     try {
 
-      await crearDenuncia({ 
-        ...formulario, 
+      await crearDenuncia({
+        ...formulario,
         autor: usuarioLogueado.usuario,
       
       });
       
       alert("¡Denuncia registrada con éxito!");
-      navigate('/dashboard'); 
+      navigate('/dashboard');
     } catch (error) {
-      alert("Error al guardar la denuncia");
+      alert(`Error al guardar la denuncia: ${error.message}`);
     }
   };
 
@@ -50,9 +50,9 @@ function CrearDenuncia({ usuarioLogueado }) {
 
         <div>
           <label>Título:</label>
-          <input 
+          <input
             type="text" name="titulo" required
-            value={formulario.titulo} onChange={handleChange} 
+            value={formulario.titulo} onChange={handleChange}
             placeholder="Ej: Bache en la Av. Amazonas"
           />
         </div>
@@ -60,7 +60,7 @@ function CrearDenuncia({ usuarioLogueado }) {
 
         <div>
           <label>Descripción:</label>
-          <textarea 
+          <textarea
             name="descripcion" required rows="3"
             value={formulario.descripcion} onChange={handleChange}
             placeholder="Detalle lo sucedido..."
@@ -72,7 +72,7 @@ function CrearDenuncia({ usuarioLogueado }) {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
           <div>
             <label>Fecha del Evento:</label>
-            <input 
+            <input
               type="date" name="fechaEvento" required
               value={formulario.fechaEvento} onChange={handleChange}
             />
@@ -103,14 +103,14 @@ function CrearDenuncia({ usuarioLogueado }) {
           <label>Visibilidad:</label>
           <div style={{ display: 'flex', gap: '20px', marginTop: '5px' }}>
             <label style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-              <input 
+              <input
                 type="radio" name="esPublica" value="publica"
                 checked={formulario.esPublica === 'publica'} onChange={handleChange}
               />
               Pública
             </label>
             <label style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-              <input 
+              <input
                 type="radio" name="esPublica" value="privada"
                 checked={formulario.esPublica === 'privada'} onChange={handleChange}
               />

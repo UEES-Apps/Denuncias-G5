@@ -13,13 +13,13 @@ namespace G5.Denuncias.BE.Api.Services.Interface
 
         #region Denuncias
         Task<Denuncia> CrearDenunciaAsync(CrearDenunciaInput request);
-        Task<Denuncia?> ObtenerDenunciaAsync(Guid id);
-        Task<IEnumerable<Denuncia>> ObtenerDenunciasPublicasUltimosDiasAsync(int dias);
+        Task<IEnumerable<Denuncia>> ObtenerDenunciasAsync();
+        Task<IEnumerable<Denuncia>> ObtenerDenunciasPublicasAsync();
         #endregion Denuncias
 
         #region Mensajes
         Task<Mensaje> EnviarMensajeAsync(EnviarMensajeInput request);
-        Task<IEnumerable<Mensaje>> ObtenerMensajesUsuarioAsync(Guid usuarioId);
+        Task<IEnumerable<Mensaje>> ObtenerMensajesUsuarioAsync(Guid denunciaId);
         #endregion Mensajes
 
     }

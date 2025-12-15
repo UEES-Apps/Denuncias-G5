@@ -11,13 +11,13 @@ namespace G5.Denuncias.BE.Domain.Denuncias
 
         #region Denuncias
         Task<Denuncia> CrearDenunciaAsync(Denuncia denuncia);
-        Task<Denuncia?> ObtenerDenunciaAsync(Guid id);
-        Task<IEnumerable<Denuncia>> ObtenerDenunciasPublicasUltimosDiasAsync(int dias);
+        Task<IEnumerable<Denuncia>> ObtenerDenunciasAsync();
+        Task<IEnumerable<Denuncia>> ObtenerDenunciasPublicasAsync();
         #endregion Denuncias
 
         #region Mensajes
         Task<Mensaje> EnviarMensajeAsync(Mensaje mensaje);
-        Task<IEnumerable<Mensaje>> ObtenerMensajesUsuarioAsync(Guid usuarioId);
+        Task<IEnumerable<Mensaje>> ObtenerMensajesUsuarioAsync(Guid denunciaId);
         #endregion Mensajes
     }
 }

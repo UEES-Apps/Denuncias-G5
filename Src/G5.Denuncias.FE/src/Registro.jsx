@@ -1,19 +1,19 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { registrarUsuario } from './servicios/authService';
 
 function Registro() {
   const [usuario, setUsuario] = useState('');
   const [clave, setClave] = useState('');
   const [mensaje, setMensaje] = useState('');
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const manejarRegistro = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     try {
       await registrarUsuario(usuario, clave);
       alert("¡Registro exitoso! Ahora inicia sesión.");
-      navigate('/'); 
+      navigate('/');
     } catch (error) {
       setMensaje(error.message);
     }
@@ -23,16 +23,16 @@ function Registro() {
     <div className="card">
       <h2>Registro Anónimo 🕵️</h2>
       <form onSubmit={manejarRegistro} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        <input 
-          type="text" 
-          placeholder="Nombre de Usuario" 
+        <input
+          type="text"
+          placeholder="Nombre de Usuario"
           value={usuario}
           onChange={(e) => setUsuario(e.target.value)}
           required
         />
-        <input 
-          type="password" 
-          placeholder="Clave de Ingreso" 
+        <input
+          type="password"
+          placeholder="Clave de Ingreso"
           value={clave}
           onChange={(e) => setClave(e.target.value)}
           required

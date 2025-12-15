@@ -17,13 +17,13 @@ namespace G5.Denuncias.BE.Application.Denuncias
 
         #region Denuncias
         Task<Denuncia> CrearDenunciaAsync(CrearDenunciaDtoIn request);
-        Task<Denuncia?> ObtenerDenunciaAsync(Guid id);
-        Task<IEnumerable<Denuncia>> ObtenerDenunciasPublicasUltimosDiasAsync(int dias);
+        Task<IEnumerable<Denuncia>> ObtenerDenunciasAsync();
+        Task<IEnumerable<Denuncia>> ObtenerDenunciasPublicasAsync();
         #endregion Denuncias
 
         #region Mensajes
         Task<Mensaje> EnviarMensajeAsync(EnviarMensajeDtoIn mensaje);
-        Task<IEnumerable<Mensaje>> ObtenerMensajesUsuarioAsync(Guid usuarioId);
+        Task<IEnumerable<Mensaje>> ObtenerMensajesUsuarioAsync(Guid denunciaId);
         #endregion Mensajes
     }
 }

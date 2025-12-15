@@ -24,7 +24,60 @@ namespace G5.Denuncias.BE.Api.Controllers
             _service = service;
         }
 
+        #region Denuncias
 
+        /// <summary>
+        /// Crear denuncia
+        /// </summary>
+        [HttpPost("/denuncia/v1/crear")]
+        [ProducesResponseType(typeof(Denuncia), StatusCodes.Status200OK)]
+
+        [ProducesResponseType(typeof(ErroresDto), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErroresDto), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> CrearDenuncia([FromBody] CrearDenunciaInput body)
+        {
+            using (_log.BeginScope("Crear denuncia --> {request}", body))
+            {
+                var response = await _service.CrearDenunciaAsync(body);
+                return Ok(response);
+            }
+        }
+
+        /// <summary>
+        /// Obtener denuncia
+        /// </summary>
+        [HttpGet("/denuncia/v1/obtener")]
+        [ProducesResponseType(typeof(IEnumerable<Denuncia>), StatusCodes.Status200OK)]
+
+        [ProducesResponseType(typeof(ErroresDto), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErroresDto), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> ObtenerDenuncias()
+        {
+            using (_log.BeginScope("Obtener denuncias"))
+            {
+                var response = await _service.ObtenerDenunciasAsync();
+                return Ok(response);
+            }
+        }
+
+        /// <summary>
+        /// Obtener denuncias publicas
+        /// </summary>
+        [HttpGet("/denuncia/v1/denunciaspublicas/obtener")]
+        [ProducesResponseType(typeof(IEnumerable<Denuncia>), StatusCodes.Status200OK)]
+
+        [ProducesResponseType(typeof(ErroresDto), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErroresDto), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> ObtenerDenunciasPublicas()
+        {
+            using (_log.BeginScope("Obtener denuncias publicas"))
+            {
+                var response = await _service.ObtenerDenunciasPublicasAsync();
+                return Ok(response);
+            }
+        }
+
+        #endregion Denuncias
 
     }
 }
