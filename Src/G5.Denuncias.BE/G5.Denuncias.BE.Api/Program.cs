@@ -2,8 +2,10 @@ using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
 using G5.Denuncias.BE.Api.IoC;
 using G5.Denuncias.BE.Application.IoC;
+using G5.Denuncias.BE.Domain.Database;
 using G5.Denuncias.BE.Infraestructure.Extentions;
 using G5.Denuncias.BE.Infraestructure.IoC;
+using G5.Denuncias.BE.Infraestructure.Observabilidad;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -132,6 +134,17 @@ try
 
     Log.Information(" Run  BE Denuncias G5");
 
+    // Inicializar Migracion EntityFramework
+    var useInMemory = builder.Configuration.GetValue<bool>("UseInMemorySession");
+    if (!useInMemory)
+    {
+        using (var scope = app.Services.CreateScope())
+        {
+            var initializer = scope.ServiceProvider.GetRequiredService<IDatabaseInitializer>();
+            await initializer.InitializeAsync();
+        }
+    }
+
     // Global Exception Handler
     app.ConfigureExceptionHandler();
 
@@ -141,8 +154,6 @@ try
     // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
     {
-        app.UseDeveloperExceptionPage();
-
         app.UseSwagger();
 
         // SwaggerUI Dinámico

@@ -27,11 +27,14 @@ namespace G5.Denuncias.BE.Infraestructure.Repository.Denuncias
         public async Task<Usuario> RegistrarUsuarioAsync(string nombreUsuario, string claveHash)
         {
             var users = Users; 
-            if (string.IsNullOrEmpty(nombreUsuario) || 
-                nombreUsuario.Length  is 0 || 
-                !users.Any(x=>x.NombreUsuario.Trim().ToLower().Equals(nombreUsuario.Trim().ToLower())))
+            if (string.IsNullOrEmpty(nombreUsuario) || nombreUsuario.Length is 0)
             {
-                throw new CustomException(TipoErrorEnum.SOLICITUD_INVALIDA,"Usuario ya existe");
+                throw new CustomException(TipoErrorEnum.SOLICITUD_INVALIDA, "Nombre de usuario no válido!");
+            }
+
+            if(users.Any(x=>x.NombreUsuario.Trim().ToLower().Equals(nombreUsuario.Trim().ToLower())))
+            {
+                throw new CustomException(TipoErrorEnum.SOLICITUD_INVALIDA,$"Nombre de usuario '{nombreUsuario}' ya encuentra registrado!");
             }
 
             var user = new Usuario { NombreUsuario = nombreUsuario, ClaveHash = claveHash };
@@ -41,8 +44,20 @@ namespace G5.Denuncias.BE.Infraestructure.Repository.Denuncias
         }
 
         public async Task<Autenticar?> AutenticarAsync(string nombreUsuario, string claveHash)
-        {
+            {
+                var users = Users;
+            if (string.IsNullOrEmpty(nombreUsuario) || nombreUsuario.Length is 0)
+            {
+                throw new CustomException(TipoErrorEnum.SOLICITUD_INVALIDA, "Nombre de usuario no válido!");
+            }
+
+            if (!users.Any(x => x.NombreUsuario.Trim().ToLower().Equals(nombreUsuario.Trim().ToLower())))
+            {
+                throw new CustomException(TipoErrorEnum.SOLICITUD_INVALIDA, $"Usuario '{nombreUsuario}' no se encuentra registrado!");
+            }
+
             var user = Users.FirstOrDefault(u => u.NombreUsuario == nombreUsuario && u.ClaveHash == claveHash);
+
             var token = user == null ? null : _configuration.GenerateToken(user);
             var result = new Autenticar
             {

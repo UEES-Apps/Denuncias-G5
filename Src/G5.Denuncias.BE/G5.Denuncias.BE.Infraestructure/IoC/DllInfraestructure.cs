@@ -1,6 +1,9 @@
-﻿using G5.Denuncias.BE.Domain.Denuncias;
+﻿using G5.Denuncias.BE.Domain.Database;
+using G5.Denuncias.BE.Domain.Denuncias;
 using G5.Denuncias.BE.Infraestructure.Context;
+using G5.Denuncias.BE.Infraestructure.Database;
 using G5.Denuncias.BE.Infraestructure.Factory;
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,9 +34,11 @@ namespace G5.Denuncias.BE.Infraestructure.IoC
             });
 
             // Denuncias Repository
+            services.AddScoped<IDatabaseInitializer, SqlServerDatabaseInitializer>();
+
             services.AddScoped<IDenunciaRepository>(serviceProvider =>
             {
-                return DenunciaRepositoryFactory.Create(configuration, serviceProvider);
+                return DenunciaRepositoryFactory.CreateAsync(configuration, serviceProvider).GetAwaiter().GetResult();
             });
 
             return services;

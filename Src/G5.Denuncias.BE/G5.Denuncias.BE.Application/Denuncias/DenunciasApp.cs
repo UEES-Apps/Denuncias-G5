@@ -21,7 +21,7 @@ namespace G5.Denuncias.BE.Application.Denuncias
         {
             var response = await _repository.AutenticarAsync(request.NombreUsuario, request.ClaveHash);
             if (response is null || response.Token is null) {
-                throw new CustomException(TipoErrorEnum.SOLICITUD_INVALIDA, "No autenticado");
+                throw new CustomException(TipoErrorEnum.SOLICITUD_INVALIDA, "Contraseña incorrecta!");
             }
             return response;
         }

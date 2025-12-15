@@ -14,9 +14,9 @@ namespace G5.Denuncias.BE.Infraestructure.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Usuario>().HasKey(u => u.Id);
-            modelBuilder.Entity<Denuncia>().HasKey(d => d.Id);
-            modelBuilder.Entity<Mensaje>().HasKey(m => m.Id);
+            modelBuilder.Entity<Usuario>().ToTable("Usuario","dbo").HasKey(u => u.Id);
+            modelBuilder.Entity<Denuncia>().ToTable("Denuncia", "dbo").HasKey(d => d.Id);
+            modelBuilder.Entity<Mensaje>().ToTable("Mensaje", "dbo").HasKey(m => m.Id);
         }
     }
 }

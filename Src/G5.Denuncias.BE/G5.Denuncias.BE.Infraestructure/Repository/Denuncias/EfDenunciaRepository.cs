@@ -18,14 +18,17 @@ namespace G5.Denuncias.BE.Infraestructure.Repository.Denuncias
         #region Usuario
         public async Task<Usuario> RegistrarUsuarioAsync(string nombreUsuario, string claveHash)
         {
-            var user = new Usuario { NombreUsuario = nombreUsuario, ClaveHash = claveHash };
-            if (string.IsNullOrEmpty(nombreUsuario) ||
-                nombreUsuario.Length is 0 ||
-                !_contexto.Usuarios.Any(x => x.NombreUsuario.Trim().ToLower().Equals(nombreUsuario.Trim().ToLower())))
+            if (string.IsNullOrEmpty(nombreUsuario) || nombreUsuario.Length is 0)
             {
-                throw new CustomException(TipoErrorEnum.SOLICITUD_INVALIDA, "Usuario ya existe");
+                throw new CustomException(TipoErrorEnum.SOLICITUD_INVALIDA, "Nombre de usuario no válido!");
             }
 
+            if (_contexto.Usuarios.Any(x => x.NombreUsuario.Trim().ToLower().Equals(nombreUsuario.Trim().ToLower())))
+            {
+                throw new CustomException(TipoErrorEnum.SOLICITUD_INVALIDA, $"Nombre de usuario '{nombreUsuario}' ya encuentra registrado!");
+            }
+
+            var user = new Usuario { NombreUsuario = nombreUsuario, ClaveHash = claveHash };
             _contexto.Usuarios.Add(user);
             await _contexto.SaveChangesAsync();
             return user;
@@ -33,6 +36,16 @@ namespace G5.Denuncias.BE.Infraestructure.Repository.Denuncias
 
         public async Task<Autenticar?> AutenticarAsync(string nombreUsuario, string claveHash)
         {
+            if (string.IsNullOrEmpty(nombreUsuario) || nombreUsuario.Length is 0)
+            {
+                throw new CustomException(TipoErrorEnum.SOLICITUD_INVALIDA, "Nombre de usuario no válido!");
+            }
+
+            if (!_contexto.Usuarios.Any(x => x.NombreUsuario.Trim().ToLower().Equals(nombreUsuario.Trim().ToLower())))
+            {
+                throw new CustomException(TipoErrorEnum.SOLICITUD_INVALIDA, $"Usuario '{nombreUsuario}' no se encuentra registrado!");
+            }
+
             var user = await _contexto.Usuarios.FirstOrDefaultAsync(u => u.NombreUsuario == nombreUsuario && u.ClaveHash == claveHash);
             var token = user == null ? null : _configuration.GenerateToken(user);
             var result = new Autenticar
